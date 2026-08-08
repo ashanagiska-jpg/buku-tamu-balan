@@ -311,3 +311,10 @@ tr:hover td {
   color: var(--text);
   font-weight: 500;
 }
+
+.export-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: -0.35rem 0 0.85rem;
+}
+
