@@ -73,7 +73,7 @@ const formConfigs = {
     pkRequired: true
   },
   keluarga: {
-    title: 'Form Keluarga Klien (Bertemu PK)',
+    title: 'Form Penjamin Klien',
     fields: `
       <div class="form-group">
         <label for="nama_klien">Nama Klien yang Dituju <span class="required">*</span></label>
