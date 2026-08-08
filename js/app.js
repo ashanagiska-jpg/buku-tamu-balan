@@ -26,6 +26,21 @@ const AVATAR_COLORS = [
 
 const FOTO_BASE = 'img/pk/';
 
+/** Tanggal lokal YYYY-MM-DD (hindari toISOString/UTC yang geser hari) */
+function localDateKey(d) {
+  if (!(d instanceof Date) || isNaN(d.getTime())) return '';
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return y + '-' + m + '-' + day;
+}
+
+function todayLocalKey() {
+  return localDateKey(new Date());
+}
+
+
+
 const formConfigs = {
   registrasi: {
     title: 'Form Klien Registrasi Awal',
@@ -74,7 +89,7 @@ const formConfigs = {
     pkRequired: true
   },
   keluarga: {
-    title: 'Form Penjamin Klien (Bertemu PK)',
+    title: 'Form Penjamin Klien',
     fields: `
       <div class="form-group">
         <label for="nama_klien">Nama Klien yang Dituju <span class="required">*</span></label>
@@ -187,13 +202,16 @@ function buildTrendLabels(period, list) {
     for (let i = 0; i < 7; i++) {
       const d = new Date(start);
       d.setDate(start.getDate() + i);
-      const key = d.toISOString().slice(0, 10);
+      const key = localDateKey(d);
       labels.push(d.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric' }));
       buckets.push(key);
     }
     const byDay = { registrasi: [], wajib: [], penjamin: [] };
     buckets.forEach(key => {
-      const dayList = list.filter(g => g.timestamp && String(g.timestamp).slice(0, 10) === key);
+      const dayList = list.filter(g => {
+        if (!g.timestamp) return false;
+        return localDateKey(new Date(g.timestamp)) === key;
+      });
       byDay.registrasi.push(dayList.filter(g => g.tipe_kunjungan === 'registrasi').length);
       byDay.wajib.push(dayList.filter(g => g.tipe_kunjungan === 'wajib-lapor').length);
       byDay.penjamin.push(dayList.filter(g => g.tipe_kunjungan === 'keluarga').length);
@@ -888,10 +906,10 @@ function renderTodayVisitors() {
   const countEl = document.getElementById('today-visitors-count');
   if (!listEl) return;
 
-  const todayStr = new Date().toISOString().slice(0, 10);
+  const todayStr = todayLocalKey();
   const todayList = (cachedGuests || []).filter(g => {
     if (!g.timestamp) return false;
-    return String(g.timestamp).slice(0, 10) === todayStr;
+    return localDateKey(new Date(g.timestamp)) === todayStr;
   });
 
   // newest first (already often reversed from sheet)
@@ -974,7 +992,7 @@ async function loadStats() {
 
     cachedGuests = json.data || [];
     const now = new Date();
-    const todayStr = now.toISOString().slice(0, 10);
+    const todayStr = localDateKey(now);
 
     const day = now.getDay();
     const diffToMon = day === 0 ? 6 : day - 1;
@@ -989,7 +1007,7 @@ async function loadStats() {
       if (!g.timestamp) return;
       const d = new Date(g.timestamp);
       if (isNaN(d.getTime())) return;
-      if (d.toISOString().slice(0, 10) === todayStr) nToday++;
+      if (localDateKey(d) === todayStr) nToday++;
       if (d >= weekStart) nWeek++;
       if (d >= monthStart) nMonth++;
       if (d >= yearStart) nYear++;
