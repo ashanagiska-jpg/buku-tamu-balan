@@ -13,7 +13,7 @@ const PK_LIST = [
   { name: 'Armicho',   foto: 'armicho.jpg' },
   { name: 'Henry',     foto: 'henry.jpg' },
   { name: 'Simamora',  foto: 'simamora.jpg' },
-  { name: 'Arif',      foto: 'arif.jpg' },
+  { name: 'Arief',     foto: 'arief.jpg' },
   { name: 'Muslimah',  foto: 'muslimah.jpg' },
   { name: 'Pinesthi',  foto: 'pinesthi.jpg' }
 ];
