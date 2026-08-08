@@ -35,15 +35,10 @@ const formConfigs = {
         <select id="lapas_rutan" name="lapas_rutan" required>
           <option value="">Pilih Lapas / Rutan</option>
           <option value="Lapas Kelas IIA Lahat">Lapas Kelas IIA Lahat</option>
-          <option value="Lapas Kelas IIB Pagar Alam">Lapas Kelas IIB Pagar Alam</option>
-          <option value="Rutan Kelas IIB Muara Enim">Rutan Kelas IIB Muara Enim</option>
-          <option value="Lapas Kelas IIA Lubuklinggau">Lapas Kelas IIA Lubuklinggau</option>
-          <option value="Lapas Perempuan Kelas IIA Palembang">Lapas Perempuan Kelas IIA Palembang</option>
-          <option value="Lapas Kelas I Palembang">Lapas Kelas I Palembang</option>
-          <option value="Lapas Narkotika Kelas IIA Palembang">Lapas Narkotika Kelas IIA Palembang</option>
-          <option value="Rutan Kelas I Palembang">Rutan Kelas I Palembang</option>
-          <option value="Lapas Kelas IIA Baturaja">Lapas Kelas IIA Baturaja</option>
-          <option value="Lapas Kelas IIB Kayuagung">Lapas Kelas IIB Kayuagung</option>
+          <option value="Lapas Kelas III Pagar Alam">Lapas Kelas III Pagar Alam</option>
+          <option value="Lapas Kelas IIB Muara Enim">Lapas Kelas IIB Muara Enim</option>
+          <option value="LPKA Kelas I Palembang">LPKA Kelas I Palembang</option>
+          <option value="Lapas Kelas IIB Empat Lawang">Lapas Kelas IIB Empat Lawang</option>
           <option value="Lainnya">Lainnya</option>
         </select>
       </div>
