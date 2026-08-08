@@ -13,7 +13,7 @@ const PK_LIST = [
   { name: 'Armicho',   foto: 'armicho.jpg' },
   { name: 'Henry',     foto: 'henry.jpg' },
   { name: 'Simamora',  foto: 'simamora.jpg' },
-  { name: 'Arief',     foto: 'arief.jpg' },
+  { name: 'Arif',      foto: 'arif.jpg' },
   { name: 'Muslimah',  foto: 'muslimah.jpg' },
   { name: 'Pinesthi',  foto: 'pinesthi.jpg' }
 ];
@@ -35,14 +35,14 @@ const formConfigs = {
         <select id="lapas_rutan" name="lapas_rutan" required>
           <option value="">Pilih Lapas / Rutan</option>
           <option value="Lapas Kelas IIA Lahat">Lapas Kelas IIA Lahat</option>
-          <option value="Lapas Kelas III Pagar Alam">Lapas Kelas III Pagar Alam</option>
+          <option value="Lapas Kelas IIB Pagar Alam">Lapas Kelas IIB Pagar Alam</option>
           <option value="Rutan Kelas IIB Muara Enim">Rutan Kelas IIB Muara Enim</option>
           <option value="Lapas Kelas IIA Lubuklinggau">Lapas Kelas IIA Lubuklinggau</option>
           <option value="Lapas Perempuan Kelas IIA Palembang">Lapas Perempuan Kelas IIA Palembang</option>
           <option value="Lapas Kelas I Palembang">Lapas Kelas I Palembang</option>
           <option value="Lapas Narkotika Kelas IIA Palembang">Lapas Narkotika Kelas IIA Palembang</option>
           <option value="Rutan Kelas I Palembang">Rutan Kelas I Palembang</option>
-          <option value="Rutan Kelas II Baturaja">Lapas Kelas II Baturaja</option>
+          <option value="Lapas Kelas IIA Baturaja">Lapas Kelas IIA Baturaja</option>
           <option value="Lapas Kelas IIB Kayuagung">Lapas Kelas IIB Kayuagung</option>
           <option value="Lainnya">Lainnya</option>
         </select>
@@ -1005,8 +1005,6 @@ function showScreen(screen) {
 function showWelcome() {
   guestForm.reset();
   clearPkSelection();
-  stopCamera();
-  hasPhoto = false;
   showScreen(welcomeScreen);
   loadStats();
   document.querySelectorAll('.side-nav-btn').forEach(b => b.classList.remove('active'));
@@ -1017,209 +1015,10 @@ function showWelcome() {
 
 
 
-// ===== Camera / Foto Wajah =====
-let cameraStream = null;
-let hasPhoto = false;
-
-async function startCamera() {
-  const video = document.getElementById('camera-video');
-  const placeholder = document.getElementById('camera-placeholder');
-  const preview = document.getElementById('camera-preview');
-  const btnCapture = document.getElementById('btn-capture');
-  const btnRetake = document.getElementById('btn-retake');
-  const btnStart = document.getElementById('btn-start-camera');
-
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    alert('Perangkat ini tidak mendukung kamera. Gunakan browser modern (Chrome/Edge) di tablet atau komputer yang ada kamera.');
-    return;
-  }
-
-  try {
-    stopCamera();
-    cameraStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } },
-      audio: false
-    });
-    if (video) {
-      video.srcObject = cameraStream;
-      video.style.display = 'block';
-    }
-    if (preview) preview.style.display = 'none';
-    if (placeholder) placeholder.style.display = 'none';
-    if (btnCapture) btnCapture.style.display = 'inline-block';
-    if (btnRetake) btnRetake.style.display = 'none';
-    if (btnStart) btnStart.style.display = 'none';
-  } catch (err) {
-    console.error(err);
-    alert('Tidak dapat mengakses kamera. Pastikan izin kamera diizinkan di browser.');
-  }
-}
-
-function stopCamera() {
-  if (cameraStream) {
-    cameraStream.getTracks().forEach(t => t.stop());
-    cameraStream = null;
-  }
-  const video = document.getElementById('camera-video');
-  if (video) {
-    video.srcObject = null;
-  }
-}
-
-function capturePhoto() {
-  const video = document.getElementById('camera-video');
-  const canvas = document.getElementById('camera-canvas');
-  const preview = document.getElementById('camera-preview');
-  const hidden = document.getElementById('foto_wajah');
-  const btnCapture = document.getElementById('btn-capture');
-  const btnRetake = document.getElementById('btn-retake');
-  const btnStart = document.getElementById('btn-start-camera');
-
-  if (!video || !canvas || !video.videoWidth) {
-    alert('Kamera belum siap. Tunggu sebentar lalu coba lagi.');
-    return;
-  }
-
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  const ctx = canvas.getContext('2d');
-  ctx.drawImage(video, 0, 0);
-
-  // Compress as JPEG
-  const dataUrl = canvas.toDataURL('image/jpeg', 0.72);
-  if (hidden) hidden.value = dataUrl;
-  if (preview) {
-    preview.src = dataUrl;
-    preview.style.display = 'block';
-  }
-  if (video) video.style.display = 'none';
-  hasPhoto = true;
-
-  stopCamera();
-  if (btnCapture) btnCapture.style.display = 'none';
-  if (btnRetake) btnRetake.style.display = 'inline-block';
-  if (btnStart) btnStart.style.display = 'none';
-}
-
-function retakePhoto() {
-  const hidden = document.getElementById('foto_wajah');
-  const preview = document.getElementById('camera-preview');
-  const placeholder = document.getElementById('camera-placeholder');
-  if (hidden) hidden.value = '';
-  if (preview) {
-    preview.style.display = 'none';
-    preview.src = '';
-  }
-  if (placeholder) placeholder.style.display = 'flex';
-  hasPhoto = false;
-  startCamera();
-}
-
-function resetCameraUI() {
-  stopCamera();
-  hasPhoto = false;
-  const hidden = document.getElementById('foto_wajah');
-  const preview = document.getElementById('camera-preview');
-  const video = document.getElementById('camera-video');
-  const placeholder = document.getElementById('camera-placeholder');
-  const btnCapture = document.getElementById('btn-capture');
-  const btnRetake = document.getElementById('btn-retake');
-  const btnStart = document.getElementById('btn-start-camera');
-  if (hidden) hidden.value = '';
-  if (preview) { preview.style.display = 'none'; preview.src = ''; }
-  if (video) video.style.display = 'none';
-  if (placeholder) placeholder.style.display = 'flex';
-  if (btnCapture) btnCapture.style.display = 'none';
-  if (btnRetake) btnRetake.style.display = 'none';
-  if (btnStart) btnStart.style.display = 'inline-block';
-}
-
-function bindCameraButtons() {
-  const btnStart = document.getElementById('btn-start-camera');
-  const btnCapture = document.getElementById('btn-capture');
-  const btnRetake = document.getElementById('btn-retake');
-  if (btnStart) btnStart.onclick = startCamera;
-  if (btnCapture) btnCapture.onclick = capturePhoto;
-  if (btnRetake) btnRetake.onclick = retakePhoto;
-  resetCameraUI();
-}
 
 
-// ===== Signature Pad =====
-let signCanvas, signCtx, isDrawing = false, hasSigned = false;
 
-function initSignPad() {
-  signCanvas = document.getElementById('sign-pad');
-  if (!signCanvas) return;
-  signCtx = signCanvas.getContext('2d');
 
-  // HiDPI scale
-  const rect = signCanvas.getBoundingClientRect();
-  const dpr = window.devicePixelRatio || 1;
-  signCanvas.width = Math.floor(rect.width * dpr);
-  signCanvas.height = Math.floor(160 * dpr);
-  signCtx.scale(dpr, dpr);
-  signCanvas.style.width = rect.width + 'px';
-  signCanvas.style.height = '160px';
-
-  signCtx.strokeStyle = '#0f2b4c';
-  signCtx.lineWidth = 2.2;
-  signCtx.lineCap = 'round';
-  signCtx.lineJoin = 'round';
-
-  hasSigned = false;
-  const hidden = document.getElementById('tanda_tangan');
-  if (hidden) hidden.value = '';
-
-  const getPos = (e) => {
-    const r = signCanvas.getBoundingClientRect();
-    const t = e.touches ? e.touches[0] : e;
-    return { x: t.clientX - r.left, y: t.clientY - r.top };
-  };
-
-  const start = (e) => {
-    e.preventDefault();
-    isDrawing = true;
-    const p = getPos(e);
-    signCtx.beginPath();
-    signCtx.moveTo(p.x, p.y);
-  };
-  const move = (e) => {
-    if (!isDrawing) return;
-    e.preventDefault();
-    const p = getPos(e);
-    signCtx.lineTo(p.x, p.y);
-    signCtx.stroke();
-    hasSigned = true;
-  };
-  const end = () => {
-    if (!isDrawing) return;
-    isDrawing = false;
-    if (hasSigned) {
-      const hidden = document.getElementById('tanda_tangan');
-      if (hidden) hidden.value = signCanvas.toDataURL('image/png');
-    }
-  };
-
-  signCanvas.onmousedown = start;
-  signCanvas.onmousemove = move;
-  signCanvas.onmouseup = end;
-  signCanvas.onmouseleave = end;
-  signCanvas.ontouchstart = start;
-  signCanvas.ontouchmove = move;
-  signCanvas.ontouchend = end;
-
-  const clearBtn = document.getElementById('sign-clear');
-  if (clearBtn) {
-    clearBtn.onclick = () => {
-      const r = signCanvas.getBoundingClientRect();
-      signCtx.clearRect(0, 0, r.width, 160);
-      hasSigned = false;
-      const hidden = document.getElementById('tanda_tangan');
-      if (hidden) hidden.value = '';
-    };
-  }
-}
 
 
 function bindLapasLainnya() {
@@ -1467,14 +1266,6 @@ guestForm.addEventListener('submit', async function (e) {
     return;
   }
 
-  const foto = document.getElementById('foto_wajah');
-  if (!foto || !foto.value || !hasPhoto) {
-    alert('Silakan ambil foto wajah pengunjung terlebih dahulu sebagai bukti kehadiran.\n\nGunakan kamera di tablet/komputer loket.');
-    const box = document.getElementById('camera-box');
-    if (box) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    return;
-  }
-
   const submitBtn = guestForm.querySelector('.btn-submit');
   const btnText = submitBtn.querySelector('.btn-text');
   const btnLoading = submitBtn.querySelector('.btn-loading');
@@ -1504,13 +1295,10 @@ guestForm.addEventListener('submit', async function (e) {
   }
   delete data.lapas_lainnya;
 
-  // Foto & TTD: tampil di bukti lokal; ke Sheet hanya flag (hemat kuota)
-  const fotoDataUrl = data.foto_wajah || '';
+  // TTD: kirim base64 ke server (disimpan Drive + link di Sheet)
   const ttdDataUrl = data.tanda_tangan || '';
-  data.foto_wajah = fotoDataUrl ? 'Ya' : '';
-  data.tanda_tangan = ttdDataUrl ? 'Ya' : '';
-  data._foto_preview = fotoDataUrl;
   data._ttd_preview = ttdDataUrl;
+  // data.tanda_tangan tetap base64 data URL untuk Apps Script
 
   const typeLabels = {
     registrasi: 'Klien Registrasi Awal',
@@ -1527,7 +1315,7 @@ guestForm.addEventListener('submit', async function (e) {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify((() => { const { _ttd_preview, _foto_preview, ...rest } = data; return rest; })())
+      body: JSON.stringify(data)
     });
     showSuccess(data);
   } catch (err) {
@@ -1550,9 +1338,6 @@ function showSuccess(data) {
   let extra = '';
   if (data.pk_tujuan) extra += `<p><strong>PK:</strong> ${data.pk_tujuan}</p>`;
   if (data.lapas_rutan) extra += `<p><strong>Lapas/Rutan:</strong> ${data.lapas_rutan}</p>`;
-  if (data._ttd_preview) {
-    extra += `<p><strong>Tanda Tangan:</strong></p><img src="${data._ttd_preview}" alt="TTD" style="max-width:200px;max-height:80px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;margin-top:4px;" />`;
-  }
   info.innerHTML = `
     <p><strong>Jenis:</strong> ${data.tipe_label}</p>
     <p><strong>Nama:</strong> ${data.nama}</p>
