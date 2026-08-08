@@ -1,3 +1,11 @@
+
+function localDateKey(d) {
+  if (!(d instanceof Date) || isNaN(d.getTime())) return '';
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return y + '-' + m + '-' + day;
+}
 // Admin Buku Tamu - Bapas Lahat
 // Backend: Google Sheets via Apps Script
 
@@ -97,7 +105,7 @@ function getFilteredGuests() {
   }
 
   if (dateFilter) {
-    filtered = filtered.filter(g => g.timestamp && String(g.timestamp).slice(0, 10) === dateFilter);
+    filtered = filtered.filter(g => g.timestamp && localDateKey(new Date(g.timestamp)) === dateFilter);
   } else if (periodFilter && periodFilter !== 'all') {
     const range = getPeriodRange(periodFilter);
     if (range) {
@@ -125,8 +133,8 @@ function renderTable() {
   const filtered = getFilteredGuests();
 
   // Stats hari ini
-  const today = new Date().toISOString().slice(0, 10);
-  const todayGuests = allGuests.filter(g => g.timestamp && g.timestamp.slice(0, 10) === today);
+  const today = localDateKey(new Date());
+  const todayGuests = allGuests.filter(g => g.timestamp && localDateKey(new Date(g.timestamp)) === today);
 
   document.getElementById('stat-total').textContent = todayGuests.length;
   document.getElementById('stat-registrasi').textContent =
@@ -302,7 +310,7 @@ function exportRows() {
 function exportFilename(ext) {
   const p = document.getElementById('filter-period')?.value || 'all';
   const tag = ({ all: 'semua', week: 'mingguan', month: 'bulanan', year: 'tahunan' })[p] || p;
-  const day = new Date().toISOString().slice(0, 10);
+  const day = localDateKey(new Date());
   return `buku-tamu-bapas-lahat-${tag}-${day}.${ext}`;
 }
 
