@@ -260,43 +260,6 @@
                 <textarea id="catatan" name="catatan" rows="2" placeholder="Catatan lain jika ada..."></textarea>
               </div>
 
-              <div class="form-group">
-                <label>Foto Wajah Pengunjung <span class="required">*</span></label>
-                <p class="field-hint">Ambil foto dengan kamera perangkat di loket (pengunjung tidak perlu punya HP)</p>
-                <div class="camera-box" id="camera-box">
-                  <video id="camera-video" autoplay playsinline muted></video>
-                  <canvas id="camera-canvas" style="display:none"></canvas>
-                  <img id="camera-preview" alt="Foto wajah" style="display:none" />
-                  <div class="camera-placeholder" id="camera-placeholder">
-                    <span>📷</span>
-                    <p>Kamera belum aktif</p>
-                  </div>
-                </div>
-                <div class="camera-actions">
-                  <button type="button" class="btn-outline-sm" id="btn-start-camera">Aktifkan Kamera</button>
-                  <button type="button" class="btn-outline-sm primary-outline" id="btn-capture" style="display:none">Ambil Foto</button>
-                  <button type="button" class="btn-outline-sm" id="btn-retake" style="display:none">Ambil Ulang</button>
-                  <label class="btn-outline-sm" id="btn-file-photo" style="cursor:pointer;display:inline-block">
-                    Pilih dari File
-                    <input type="file" id="foto-file-input" accept="image/*" capture="user" style="display:none" />
-                  </label>
-                </div>
-                <p class="field-hint" id="camera-status"></p>
-                <input type="hidden" id="foto_wajah" name="foto_wajah" value="" />
-              </div>
-
-              <div class="form-group">
-                <label>Tanda Tangan Pengunjung <span class="opt-label">(opsional)</span></label>
-                <div class="sign-pad-wrap">
-                  <canvas id="sign-pad" width="400" height="160"></canvas>
-                  <div class="sign-pad-actions">
-                    <button type="button" class="btn-outline-sm" id="sign-clear">Hapus Tanda Tangan</button>
-                    <span class="sign-hint">Tanda tangani di kotak di atas (jari/mouse)</span>
-                  </div>
-                </div>
-                <input type="hidden" id="tanda_tangan" name="tanda_tangan" value="" />
-              </div>
-
               <div class="form-actions">
                 <button type="submit" class="btn-submit">
                   <span class="btn-text">Simpan Data Kunjungan</span>
