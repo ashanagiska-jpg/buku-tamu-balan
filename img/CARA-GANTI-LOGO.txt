@@ -1,0 +1,19 @@
+CARA GANTI LOGO
+===============
+
+1. Siapkan file logo (PNG atau JPG)
+   - Disarankan PNG transparan
+   - Ukuran ideal: 200x200 px atau lebih
+   - Bentuk kotak/persegi lebih rapi
+
+2. Rename file menjadi:  logo.png
+
+3. Letakkan di folder:
+   buku-tamu-bapas-lahat/img/logo.png
+
+4. Refresh halaman browser (Ctrl+F5)
+
+Catatan:
+- Jika logo.png belum ada, otomatis tampil emoji gedung
+- Bisa juga pakai logo.jpg — ubah src di index.html:
+  <img src="img/logo.jpg" ...>
