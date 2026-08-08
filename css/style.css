@@ -1296,3 +1296,22 @@ select {
 .btn-outline-sm.primary-outline:hover {
   background: var(--accent-soft);
 }
+
+.logo-icon {
+  overflow: hidden;
+  padding: 0;
+}
+.logo-icon .logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  padding: 4px;
+}
+.logo-icon.logo-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  padding: 0;
+}
