@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Buku Tamu Online - Bapas Lahat</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar kiri -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-icon">🏛️</div>
+        <div class="brand-text">
+          <strong>Buku Tamu</strong>
+          <span>Bapas Lahat</span>
+        </div>
+      </div>
+
+      <p class="sidebar-section-label">Jenis Kunjungan</p>
+      <nav class="sidebar-nav">
+        <button type="button" class="side-nav-btn" data-type="registrasi">
+          <span class="side-icon reg">📝</span>
+          <span class="side-text">
+            <span class="side-title">Registrasi Awal</span>
+            <span class="side-desc">Klien baru</span>
+          </span>
+        </button>
+        <button type="button" class="side-nav-btn" data-type="wajib-lapor">
+          <span class="side-icon wajib">📋</span>
+          <span class="side-text">
+            <span class="side-title">Wajib Lapor</span>
+            <span class="side-desc">Pelaporan berkala</span>
+          </span>
+        </button>
+        <button type="button" class="side-nav-btn" data-type="keluarga">
+          <span class="side-icon kel">👨‍👩‍👧</span>
+          <span class="side-text">
+            <span class="side-title">Penjamin</span>
+            <span class="side-desc">Bertemu PK</span>
+          </span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="admin/index.html" class="side-admin-link">⚙️ Admin</a>
+      </div>
+    </aside>
+
+    <!-- Overlay mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Konten utama -->
+    <div class="main-panel">
+      <header class="topbar">
+        <button type="button" class="menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+        <div class="topbar-title">
+          <h1 id="page-title">Dashboard</h1>
+          <p class="topbar-sub">Balai Pemasyarakatan Kelas II Lahat</p>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <!-- Welcome / Dashboard -->
+        <section id="welcome-screen" class="screen active">
+          <div class="stats-bar" id="stats-bar">
+            <div class="stat-item">
+              <span class="stat-value" id="stat-today">–</span>
+              <span class="stat-label">Hari Ini</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-value" id="stat-week">–</span>
+              <span class="stat-label">Minggu Ini</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-value" id="stat-month">–</span>
+              <span class="stat-label">Bulan Ini</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-value" id="stat-year">–</span>
+              <span class="stat-label">Tahun Ini</span>
+            </div>
+          </div>
+          <p class="stats-meta" id="stats-meta">Memuat statistik...</p>
+
+          <div class="chart-card" id="chart-card">
+            <div class="chart-header">
+              <h3>Grafik Kunjungan</h3>
+              <div class="period-tabs" id="period-tabs">
+                <button type="button" class="period-tab active" data-period="week">Mingguan</button>
+                <button type="button" class="period-tab" data-period="month">Bulanan</button>
+                <button type="button" class="period-tab" data-period="year">Tahunan</button>
+              </div>
+            </div>
+            <div class="chart-wrap">
+              <canvas id="stats-chart"></canvas>
+            </div>
+            <div class="chart-legend-custom" id="chart-breakdown">
+              <div class="bd-item">
+                <span class="bd-dot" style="background:#1d6fb8"></span>
+                <span class="bd-label">Registrasi Awal</span>
+                <span class="bd-value" id="bd-reg">0</span>
+              </div>
+              <div class="bd-item">
+                <span class="bd-dot" style="background:#0d9488"></span>
+                <span class="bd-label">Wajib Lapor</span>
+                <span class="bd-value" id="bd-wajib">0</span>
+              </div>
+              <div class="bd-item">
+                <span class="bd-dot" style="background:#c2410c"></span>
+                <span class="bd-label">Penjamin</span>
+                <span class="bd-value" id="bd-kel">0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-card" id="compare-card">
+            <div class="chart-header">
+              <h3>Perbandingan Kategori</h3>
+              <div class="period-tabs" id="compare-tabs">
+                <button type="button" class="period-tab active" data-compare="week">Mingguan</button>
+                <button type="button" class="period-tab" data-compare="month">Bulanan</button>
+                <button type="button" class="period-tab" data-compare="year">Tahunan</button>
+              </div>
+            </div>
+            <div class="compare-body">
+              <div class="chart-wrap chart-wrap-doughnut">
+                <canvas id="compare-chart"></canvas>
+              </div>
+              <div class="compare-stats" id="compare-stats">
+                <div class="cmp-row">
+                  <span class="cmp-dot" style="background:#1d6fb8"></span>
+                  <span class="cmp-name">Registrasi Awal</span>
+                  <span class="cmp-bar-wrap"><span class="cmp-bar" id="cmp-bar-reg" style="background:#1d6fb8;width:0%"></span></span>
+                  <span class="cmp-num" id="cmp-reg">0</span>
+                  <span class="cmp-pct" id="cmp-pct-reg">0%</span>
+                </div>
+                <div class="cmp-row">
+                  <span class="cmp-dot" style="background:#0d9488"></span>
+                  <span class="cmp-name">Wajib Lapor</span>
+                  <span class="cmp-bar-wrap"><span class="cmp-bar" id="cmp-bar-wajib" style="background:#0d9488;width:0%"></span></span>
+                  <span class="cmp-num" id="cmp-wajib">0</span>
+                  <span class="cmp-pct" id="cmp-pct-wajib">0%</span>
+                </div>
+                <div class="cmp-row">
+                  <span class="cmp-dot" style="background:#c2410c"></span>
+                  <span class="cmp-name">Penjamin</span>
+                  <span class="cmp-bar-wrap"><span class="cmp-bar" id="cmp-bar-kel" style="background:#c2410c;width:0%"></span></span>
+                  <span class="cmp-num" id="cmp-kel">0</span>
+                  <span class="cmp-pct" id="cmp-pct-kel">0%</span>
+                </div>
+                <div class="cmp-total">
+                  Total periode: <strong id="cmp-total">0</strong> kunjungan
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Statistik Lapas/Rutan -->
+          <div class="chart-card" id="lapas-stats-card">
+            <div class="chart-header">
+              <h3>Asal Lapas / Rutan</h3>
+              <div class="period-tabs" id="lapas-stats-tabs">
+                <button type="button" class="period-tab active" data-lapas-period="week">Mingguan</button>
+                <button type="button" class="period-tab" data-lapas-period="month">Bulanan</button>
+                <button type="button" class="period-tab" data-lapas-period="year">Tahunan</button>
+                <button type="button" class="period-tab" data-lapas-period="all">Semua</button>
+              </div>
+            </div>
+            <div class="chart-wrap chart-wrap-pk">
+              <canvas id="lapas-stats-chart"></canvas>
+            </div>
+            <div class="pk-rank-list" id="lapas-rank-list"></div>
+          </div>
+
+          <!-- Statistik PK -->
+          <div class="chart-card" id="pk-stats-card">
+            <div class="chart-header">
+              <h3>PK Paling Banyak Dikunjungi</h3>
+              <div class="period-tabs" id="pk-stats-tabs">
+                <button type="button" class="period-tab active" data-pk-period="week">Mingguan</button>
+                <button type="button" class="period-tab" data-pk-period="month">Bulanan</button>
+                <button type="button" class="period-tab" data-pk-period="year">Tahunan</button>
+                <button type="button" class="period-tab" data-pk-period="all">Semua</button>
+              </div>
+            </div>
+            <div class="chart-wrap chart-wrap-pk">
+              <canvas id="pk-stats-chart"></canvas>
+            </div>
+            <div class="pk-rank-list" id="pk-rank-list"></div>
+          </div>
+
+          <div class="chart-card" id="trend-card">
+            <div class="chart-header">
+              <h3>Tren Bulanan <span class="chart-year-label" id="trend-year-label"></span></h3>
+            </div>
+            <div class="chart-wrap chart-wrap-trend">
+              <canvas id="trend-chart"></canvas>
+            </div>
+            <p class="trend-hint">Garis menunjukkan pola kunjungan per bulan sepanjang tahun berjalan</p>
+          </div>
+        </section>
+
+        <!-- Form -->
+        <section id="form-screen" class="screen">
+          <div class="form-card">
+            <div class="form-header">
+              <button type="button" class="btn-back" id="btn-back">← Kembali ke Dashboard</button>
+              <h2 id="form-title">Form Kunjungan</h2>
+            </div>
+            <form id="guest-form" autocomplete="off">
+              <input type="hidden" id="tipe_kunjungan" name="tipe_kunjungan" />
+
+              <div class="form-group">
+                <label for="nama">Nama Lengkap <span class="required">*</span></label>
+                <input type="text" id="nama" name="nama" required placeholder="Masukkan nama lengkap" />
+              </div>
+
+              <div class="form-group">
+                <label for="no_hp">No. HP / WhatsApp</label>
+                <input type="tel" id="no_hp" name="no_hp" placeholder="08xxxxxxxxxx" />
+              </div>
+
+              <div id="dynamic-fields"></div>
+
+              <div class="form-group" id="pk-picker-wrap">
+                <label>Pembimbing Kemasyarakatan (PK) <span class="required" id="pk-req-mark" style="display:none">*</span></label>
+                <input type="hidden" id="pk_tujuan" name="pk_tujuan" value="" />
+                <button type="button" class="pk-trigger" id="pk-trigger">
+                  <div class="pk-trigger-empty" id="pk-trigger-empty">
+                    <span class="pk-trigger-icon">👤</span>
+                    <span>Pilih PK</span>
+                  </div>
+                  <div class="pk-trigger-selected" id="pk-trigger-selected" style="display:none">
+                    <img id="pk-trigger-foto" src="" alt="" />
+                    <span id="pk-trigger-name"></span>
+                    <span class="pk-trigger-change">Ganti</span>
+                  </div>
+                </button>
+              </div>
+
+              <div class="form-group">
+                <label for="keperluan">Keperluan / Tujuan <span class="required">*</span></label>
+                <textarea id="keperluan" name="keperluan" rows="3" required placeholder="Jelaskan keperluan kunjungan..."></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="catatan">Catatan Tambahan <span class="opt-label">(opsional)</span></label>
+                <textarea id="catatan" name="catatan" rows="2" placeholder="Catatan lain jika ada..."></textarea>
+              </div>
+
+              <div class="form-group">
+                <label>Foto Wajah Pengunjung <span class="required">*</span></label>
+                <p class="field-hint">Ambil foto dengan kamera perangkat di loket (pengunjung tidak perlu punya HP)</p>
+                <div class="camera-box" id="camera-box">
+                  <video id="camera-video" autoplay playsinline muted></video>
+                  <canvas id="camera-canvas" style="display:none"></canvas>
+                  <img id="camera-preview" alt="Foto wajah" style="display:none" />
+                  <div class="camera-placeholder" id="camera-placeholder">
+                    <span>📷</span>
+                    <p>Kamera belum aktif</p>
+                  </div>
+                </div>
+                <div class="camera-actions">
+                  <button type="button" class="btn-outline-sm" id="btn-start-camera">Aktifkan Kamera</button>
+                  <button type="button" class="btn-outline-sm primary-outline" id="btn-capture" style="display:none">Ambil Foto</button>
+                  <button type="button" class="btn-outline-sm" id="btn-retake" style="display:none">Ambil Ulang</button>
+                </div>
+                <input type="hidden" id="foto_wajah" name="foto_wajah" value="" />
+              </div>
+
+              <div class="form-group">
+                <label>Tanda Tangan Pengunjung <span class="opt-label">(opsional)</span></label>
+                <div class="sign-pad-wrap">
+                  <canvas id="sign-pad" width="400" height="160"></canvas>
+                  <div class="sign-pad-actions">
+                    <button type="button" class="btn-outline-sm" id="sign-clear">Hapus Tanda Tangan</button>
+                    <span class="sign-hint">Tanda tangani di kotak di atas (jari/mouse)</span>
+                  </div>
+                </div>
+                <input type="hidden" id="tanda_tangan" name="tanda_tangan" value="" />
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                  <span class="btn-text">Simpan Data Kunjungan</span>
+                  <span class="btn-loading" style="display:none">Menyimpan...</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- Success -->
+        <section id="success-screen" class="screen">
+          <div class="success-card">
+            <div class="success-icon">✓</div>
+            <h2>Data Berhasil Disimpan</h2>
+            <p id="success-message">Terima kasih. Data kunjungan Anda telah tercatat.</p>
+            
+            <div class="bukti-card" id="bukti-card">
+              <div class="bukti-header">
+                <strong>BUKTI KEDATANGAN</strong>
+                <span>Bapas Kelas II Lahat</span>
+              </div>
+              <div class="success-info" id="success-info"></div>
+              <div class="bukti-footer">
+                <p>Kode: <strong id="bukti-kode">—</strong></p>
+                <p class="bukti-note">Simpan atau cetak bukti ini sebagai tanda kehadiran.</p>
+              </div>
+            </div>
+
+            <div class="bukti-actions">
+              <button type="button" class="btn-primary" id="btn-print-bukti">🖨️ Cetak / Simpan PDF</button>
+              <button type="button" class="btn-outline-full" id="btn-new">Kembali ke Dashboard</button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>© 2026 Balai Pemasyarakatan Kelas II Lahat</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- PK Popup Modal -->
+  <div class="pk-modal" id="pk-modal" aria-hidden="true">
+    <div class="pk-modal-backdrop" id="pk-modal-backdrop"></div>
+    <div class="pk-modal-sheet">
+      <div class="pk-modal-header">
+        <h3>Pilih Pembimbing Kemasyarakatan</h3>
+        <button type="button" class="pk-modal-close" id="pk-modal-close" aria-label="Tutup">×</button>
+      </div>
+      <div class="pk-carousel" id="pk-carousel">
+        <button type="button" class="pk-nav pk-nav-prev" id="pk-prev" aria-label="Sebelumnya">‹</button>
+        <div class="pk-slide-area">
+          <div class="pk-slide-inner" id="pk-slide-inner">
+            <div class="pk-slide-foto-wrap">
+              <img id="pk-slide-foto" src="" alt="" />
+              <div class="pk-slide-fallback" id="pk-slide-fallback"></div>
+            </div>
+            <p class="pk-slide-name" id="pk-slide-name"></p>
+            <p class="pk-slide-counter" id="pk-slide-counter"></p>
+          </div>
+        </div>
+        <button type="button" class="pk-nav pk-nav-next" id="pk-next" aria-label="Berikutnya">›</button>
+      </div>
+      <div class="pk-dots" id="pk-dots"></div>
+      <button type="button" class="btn-submit pk-confirm" id="pk-confirm">Pilih PK Ini</button>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

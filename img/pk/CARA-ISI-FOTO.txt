@@ -1,0 +1,29 @@
+CARA MEMASUKKAN FOTO PK
+=======================
+
+1. Siapkan foto masing-masing PK (format JPG atau PNG)
+2. Crop foto agar wajah di tengah (disarankan rasio 1:1 / kotak)
+3. Rename file sesuai daftar di bawah (huruf kecil semua):
+
+   firman.jpg
+   sarnudi.jpg
+   merwandi.jpg
+   rinto.jpg
+   darwind.jpg
+   eryzal.jpg
+   rozak.jpg
+   revan.jpg
+   marendi.jpg
+   armicho.jpg
+   henry.jpg
+   simamora.jpg
+   arif.jpg
+   muslimah.jpg
+   pinesthi.jpg
+
+4. Letakkan semua file foto ke dalam folder ini (img/pk/)
+
+Catatan:
+- Bisa juga pakai .png (ubah juga di js/app.js jika perlu)
+- Jika foto belum ada, sistem otomatis tampilkan inisial nama
+- Ukuran disarankan 200x200 px atau lebih (akan di-resize otomatis)

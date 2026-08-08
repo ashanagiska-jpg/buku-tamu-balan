@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Admin Buku Tamu - Bapas Lahat</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container admin-container">
+    <header class="header">
+      <div class="header-content">
+        <div class="logo-area">
+          <div class="logo-icon">⚙️</div>
+          <div>
+            <h1>Admin Buku Tamu</h1>
+            <p class="subtitle">Balai Pemasyarakatan Kelas II Lahat</p>
+          </div>
+        </div>
+        <a href="../index.html" class="admin-link" title="Kembali ke Form">🏠</a>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- Login (simple PIN) -->
+      <section id="login-screen" class="screen active">
+        <div class="welcome-card">
+          <h2>Login Admin</h2>
+          <p class="welcome-text">Masukkan PIN untuk mengakses data kunjungan.</p>
+          <form id="login-form">
+            <div class="form-group">
+              <label for="pin">PIN Admin</label>
+              <input type="password" id="pin" name="pin" placeholder="Masukkan PIN" maxlength="8" required autocomplete="off" />
+            </div>
+            <p class="pin-hint">Default PIN: <strong>bapas2026</strong></p>
+            <button type="submit" class="btn-submit">Masuk</button>
+          </form>
+          <p id="login-error" class="error-msg" style="display:none;"></p>
+        </div>
+      </section>
+
+      <!-- Dashboard -->
+      <section id="dashboard-screen" class="screen">
+        <div class="stats-row">
+          <div class="stat-card">
+            <span class="stat-num" id="stat-total">0</span>
+            <span class="stat-label">Total Hari Ini</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num" id="stat-registrasi">0</span>
+            <span class="stat-label">Registrasi</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num" id="stat-wajib">0</span>
+            <span class="stat-label">Wajib Lapor</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num" id="stat-keluarga">0</span>
+            <span class="stat-label">Keluarga</span>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="filter-group">
+            <select id="filter-type">
+              <option value="all">Semua Jenis</option>
+              <option value="registrasi">Registrasi Awal</option>
+              <option value="wajib-lapor">Wajib Lapor</option>
+              <option value="keluarga">Keluarga Klien</option>
+            </select>
+            <input type="date" id="filter-date" />
+          </div>
+          <div class="toolbar-actions">
+            <button id="btn-export" class="btn-outline">📥 Export CSV</button>
+            <button id="btn-clear" class="btn-outline danger">🗑️ Hapus Semua</button>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div id="empty-state" class="empty-state" style="display:none;">
+            <p>Belum ada data kunjungan.</p>
+          </div>
+          <div class="table-wrapper">
+            <table id="guest-table">
+              <thead>
+                <tr>
+                  <th>Waktu</th>
+                  <th>Jenis</th>
+                  <th>Nama</th>
+                  <th>NIK</th>
+                  <th>Detail</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="guest-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>© 2026 Bapas Lahat · Panel Admin Buku Tamu</p>
+    </footer>
+  </div>
+
+  <!-- Modal Detail -->
+  <div id="detail-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Detail Kunjungan</h3>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>
