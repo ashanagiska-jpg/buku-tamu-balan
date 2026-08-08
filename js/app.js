@@ -35,9 +35,15 @@ const formConfigs = {
         <select id="lapas_rutan" name="lapas_rutan" required>
           <option value="">Pilih Lapas / Rutan</option>
           <option value="Lapas Kelas IIA Lahat">Lapas Kelas IIA Lahat</option>
-          <option value="Lapas Kelas III Pagar Alam">Lapas Kelas III Pagar Alam</option>
-          <option value="Lapas Kelas IIB Muara Enim">Lapas Kelas IIB Muara Enim</option>
-          <option value="Lapas Kelas IIB Empat Lawang">Lapas Kelas IIB Empat Lawang</option>
+          <option value="Lapas Kelas IIB Pagar Alam">Lapas Kelas IIB Pagar Alam</option>
+          <option value="Rutan Kelas IIB Muara Enim">Rutan Kelas IIB Muara Enim</option>
+          <option value="Lapas Kelas IIA Lubuklinggau">Lapas Kelas IIA Lubuklinggau</option>
+          <option value="Lapas Perempuan Kelas IIA Palembang">Lapas Perempuan Kelas IIA Palembang</option>
+          <option value="Lapas Kelas I Palembang">Lapas Kelas I Palembang</option>
+          <option value="Lapas Narkotika Kelas IIA Palembang">Lapas Narkotika Kelas IIA Palembang</option>
+          <option value="Rutan Kelas I Palembang">Rutan Kelas I Palembang</option>
+          <option value="Lapas Kelas IIA Baturaja">Lapas Kelas IIA Baturaja</option>
+          <option value="Lapas Kelas IIB Kayuagung">Lapas Kelas IIB Kayuagung</option>
           <option value="Lainnya">Lainnya</option>
         </select>
       </div>
@@ -73,7 +79,7 @@ const formConfigs = {
     pkRequired: true
   },
   keluarga: {
-    title: 'Form Penjamin Klien',
+    title: 'Form Keluarga Klien (Bertemu PK)',
     fields: `
       <div class="form-group">
         <label for="nama_klien">Nama Klien yang Dituju <span class="required">*</span></label>
@@ -881,6 +887,61 @@ function renderLapasStats(period) {
 }
 
 
+
+function renderTodayVisitors() {
+  const listEl = document.getElementById('today-visitors-list');
+  const countEl = document.getElementById('today-visitors-count');
+  if (!listEl) return;
+
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const todayList = (cachedGuests || []).filter(g => {
+    if (!g.timestamp) return false;
+    return String(g.timestamp).slice(0, 10) === todayStr;
+  });
+
+  // newest first (already often reversed from sheet)
+  todayList.sort((a, b) => {
+    const ta = new Date(a.timestamp).getTime() || 0;
+    const tb = new Date(b.timestamp).getTime() || 0;
+    return tb - ta;
+  });
+
+  if (countEl) countEl.textContent = todayList.length;
+
+  if (todayList.length === 0) {
+    listEl.innerHTML = '<p class="pk-rank-empty">Belum ada pengunjung hari ini</p>';
+    return;
+  }
+
+  const badgeClass = {
+    registrasi: 'reg',
+    'wajib-lapor': 'wajib',
+    keluarga: 'kel'
+  };
+  const badgeLabel = {
+    registrasi: 'Registrasi',
+    'wajib-lapor': 'Wajib Lapor',
+    keluarga: 'Penjamin'
+  };
+
+  listEl.innerHTML = todayList.map(g => {
+    const bc = badgeClass[g.tipe_kunjungan] || 'reg';
+    const bl = badgeLabel[g.tipe_kunjungan] || (g.tipe_label || '-');
+    const waktu = g.waktu || '-';
+    const pk = g.pk_tujuan ? ` · PK: ${g.pk_tujuan}` : '';
+    const name = (g.nama || '-').replace(/</g, '&lt;');
+    return `<div class="today-visitor-item">
+      <span class="tv-time">${waktu}</span>
+      <div>
+        <div class="tv-name">${name}</div>
+        <div class="tv-meta">${bl}${pk}</div>
+      </div>
+      <span class="tv-badge ${bc}">${bl}</span>
+    </div>`;
+  }).join('');
+}
+
+
 async function loadStats() {
   const elToday = document.getElementById('stat-today');
   const elWeek = document.getElementById('stat-week');
@@ -906,6 +967,7 @@ async function loadStats() {
       renderCompareChart();
       renderPkStats();
       renderLapasStats();
+      renderTodayVisitors();
       return;
     }
 
@@ -953,6 +1015,7 @@ async function loadStats() {
     renderCompareChart();
     renderPkStats();
     renderLapasStats();
+    renderTodayVisitors();
   } catch (err) {
     console.error('Stats error:', err);
     [elToday, elWeek, elMonth, elYear].forEach(el => { if (el) el.textContent = '–'; });
